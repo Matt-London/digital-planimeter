@@ -3,7 +3,7 @@
 Planimeter* planimeter;
 
 void setup() {
-  planimeter = new Planimeter(128, 32, &Wire1, -1);
+  planimeter = new Planimeter(128, 32, &Wire, -1);
 
   Serial.begin(9600);
   

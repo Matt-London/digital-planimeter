@@ -8,12 +8,12 @@
 
 #define MAX_POINTS_SUPPORTED 1
 
-const int SDA_PIN = D10;
-const int SCL_PIN = MOSI;
+const int SDA_PIN = D4;
+const int SCL_PIN = D5;
 // const int ENCODER_PINA = A1;
 // const int ENCODER_PINB = A0;
-const int BUTTON1_PIN = A3;
-const int BUTTON2_PIN = A2;
+const int BUTTON1_PIN = D3;
+const int BUTTON2_PIN = D2;
 const String AVAILABLE_UNITS[] = {"in", "ft", "mi", "ac", "m", "cm", "mm", "km"};
 const int AVAILABLE_UNITS_SIZE = 8;
 

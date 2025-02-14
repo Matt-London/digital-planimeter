@@ -13,8 +13,9 @@ Planimeter::Planimeter(int length, int width, TwoWire* wire, int reset_pin) : di
 
   this->mode = Position;
 
-  wire->setSDA(SDA_PIN);
-  wire->setSCL(SCL_PIN);
+  // This is not needed (and doesn't work!) for Seeed Xiao esp32c6
+  // wire->setSDA(SDA_PIN);
+  // wire->setSCL(SCL_PIN);
   wire->begin();
 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
