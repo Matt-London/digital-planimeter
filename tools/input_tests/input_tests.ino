@@ -37,7 +37,7 @@ void loop() {
       encoder0Pos--;
     }
     delay(5);
-    Serial.printf("Rotary encoder pos: %d\n", encoder0Pos / 3);
+    Serial.printf("Rotary encoder pos: %d\n", encoder0Pos);
   }
   encoder0PinALast = n;
 

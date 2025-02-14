@@ -10,8 +10,8 @@
 
 const int SDA_PIN = D10;
 const int SCL_PIN = MOSI;
-const int ENCODER_PINA = A1;
-const int ENCODER_PINB = A0;
+// const int ENCODER_PINA = A1;
+// const int ENCODER_PINB = A0;
 const int BUTTON1_PIN = A3;
 const int BUTTON2_PIN = A2;
 const String AVAILABLE_UNITS[] = {"in", "ft", "mi", "ac", "m", "cm", "mm", "km"};
@@ -40,6 +40,9 @@ private:
 
   // Previous point
   point_t lastPoint = {0, 0};
+  
+  // First recorded point
+  point_t firstPoint = {0, 0};
 
   /// Delta x and Delta y for greene's theorem
   // point_t dPoint;
@@ -62,11 +65,20 @@ private:
   void drawCalibrateTraceDisp();
   void drawPositionDisp();
 
+  void printCalInputScreen(String prompt, int num, int unit_idx);
+  void printInstructionHalt(String instr);
+  void printInstruction(String instr);
+
+  void printArea(double area);
+
+  int calculateAreaSegment(point_t current, point_t last);
+
+
 public:
   Planimeter(int length, int width, TwoWire* wire, int reset_pin);
   Planimeter();
 
-  void runGreenesAccumulator();
+  int runGreenesAccumulator();
 
   void updatePosition();
 

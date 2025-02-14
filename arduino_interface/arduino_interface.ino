@@ -14,6 +14,7 @@ void loop() {
   // planimeter->runGreenesAccumulator();
   // planimeter->drawDisplay();
 
+  // planimeter->drawDisplay();
   planimeter->runPlanimeter();
   
 }
