@@ -7,8 +7,8 @@
 
 // Pins for digital inputs
 const int MOTION_PIN = NULL;
-const int SDIO = D8;
-const int SCLK = D7;
+const int SDIO = D7;
+const int SCLK = D8;
 
 #ifdef __cplusplus
 extern "C" {
