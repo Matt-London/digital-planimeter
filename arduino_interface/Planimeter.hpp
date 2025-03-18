@@ -14,8 +14,8 @@ const int SCL_PIN = D5;
 // const int ENCODER_PINB = A0;
 const int BUTTON1_PIN = D3;
 const int BUTTON2_PIN = D2;
-const String AVAILABLE_UNITS[] = {"in", "ft", "mi", "ac", "m", "cm", "mm", "km"};
-const int AVAILABLE_UNITS_SIZE = 8;
+const String AVAILABLE_UNITS[] = {"in", "ft", "mi", "m", "cm", "mm", "km"};
+const int AVAILABLE_UNITS_SIZE = 7;
 
 enum DisplayMode {
   Area,             /// Displays the resulting area

@@ -1,11 +1,11 @@
 #include <cmath>
 #include "Planimeter.hpp"
 #include "photosensor.h"
-#include "rotary_encoder.h"
+// #include "rotary_encoder.h"
 
 Planimeter::Planimeter(int length, int width, TwoWire* wire, int reset_pin) : display(length, width, wire, reset_pin) {
   photosensor_setup();
-  rotary_encoder_setup();
+  // rotary_encoder_setup();
 
   // Buttons
   pinMode(BUTTON1_PIN, INPUT_PULLUP);
@@ -19,7 +19,7 @@ Planimeter::Planimeter(int length, int width, TwoWire* wire, int reset_pin) : di
   wire->begin();
 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
-  display.setRotation(2);
+  display.setRotation(0);
   display.clearDisplay();
 
   display.setTextSize(1);
@@ -190,22 +190,21 @@ void Planimeter::runPlanimeter() {
 
   // Do calibration screen
   int encoder_pos = 0;
-  int encoder_last = LOW;
 
+  this->currentPoint = {0, 0};
   while (digitalRead(BUTTON1_PIN) == HIGH) {
-    // Get any change in value
-    int change = rotary_encoder_read();
+    // Get the change in value
+    this->updatePosition();
+    int sign = (currentPoint.x + currentPoint.y) > 0 ? -1 : 1;
 
-    encoder_pos += change;
+    encoder_pos = sign * sqrt(pow(currentPoint.x, 2) + pow(currentPoint.x, 2)) / 100;
 
     if (encoder_pos < 0) {
       encoder_pos = 0;
     }
 
-    if (change != 0) {
-      // Update the display
-      this->printCalInputScreen("Calibration length:", encoder_pos, -1);
-    }
+    // Update the display
+    this->printCalInputScreen("Calibration length:", encoder_pos, -1);
   }
 
   this->calibratedDistanceReal = encoder_pos;
@@ -218,20 +217,20 @@ void Planimeter::runPlanimeter() {
 
   // Now select a unit
   int unit_index;
+  this->currentPoint = {0, 0};
   while (digitalRead(BUTTON1_PIN) == HIGH) {
-    // Get any change in value
-    int change = rotary_encoder_read();
+    // Get the change in value
+    this->updatePosition();
+    int sign = (currentPoint.x + currentPoint.y) > 0 ? -1 : 1;
 
-    encoder_pos += change;
+    encoder_pos = sign * sqrt(pow(currentPoint.x, 2) + pow(currentPoint.x, 2)) / 100;
 
     if (encoder_pos < 0) {
       encoder_pos = 0;
     }
 
-    if (change != 0) {
-      unit_index = (encoder_pos % AVAILABLE_UNITS_SIZE + AVAILABLE_UNITS_SIZE) % AVAILABLE_UNITS_SIZE;
-      this->printCalInputScreen("Calibration unit:", this->calibratedDistanceReal, unit_index);
-    }
+    unit_index = (encoder_pos % AVAILABLE_UNITS_SIZE + AVAILABLE_UNITS_SIZE) % AVAILABLE_UNITS_SIZE;
+    this->printCalInputScreen("Calibration unit:", this->calibratedDistanceReal, unit_index);
 
   }
 
@@ -247,6 +246,7 @@ void Planimeter::runPlanimeter() {
   // display.display();
 
   this->printInstruction("Put cursor on first point");
+  this->currentPoint = {0, 0};
   while (digitalRead(BUTTON1_PIN) == HIGH) {
     this->updatePosition();
   }
@@ -271,6 +271,7 @@ void Planimeter::runPlanimeter() {
   while(true) {
     this->area = 0;
     this->printInstruction("Put the cursor on first point and start drawing after click.");
+    this->currentPoint = {0, 0};
     delay(300);
     while (digitalRead(BUTTON1_PIN) == HIGH) {
       this->updatePosition();
