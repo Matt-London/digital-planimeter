@@ -188,6 +188,8 @@ void Planimeter::runPlanimeter() {
   // Put in initial display
   this->printCalInputScreen("Calibration length:", 0, -1);
 
+  bool use_preset = false;
+
   // Do calibration screen
   int encoder_pos = 0;
 
@@ -205,6 +207,10 @@ void Planimeter::runPlanimeter() {
 
     // Update the display
     this->printCalInputScreen("Calibration length:", encoder_pos, -1);
+  }
+
+  if (encoder_pos == 0) {
+    use_preset = true;
   }
 
   this->calibratedDistanceReal = encoder_pos;
@@ -267,6 +273,12 @@ void Planimeter::runPlanimeter() {
 
   // Calculate the distance of the line
   this->calibratedDistancePixel = sqrt(pow(second_point_y - first_point_y, 2) + pow(second_point_x - first_point_x, 2));
+
+  if (use_preset) {
+    this->calibratedDistancePixel = sqrt(pow(-3452 - 24, 2) + pow(-342 - -118, 2));
+    this->calibratedDistanceReal = 4;
+    this->unit_index = 0;
+  }
 
   while(true) {
     this->area = 0;
